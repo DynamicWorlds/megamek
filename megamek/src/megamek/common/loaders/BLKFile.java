@@ -299,10 +299,16 @@ public class BLKFile {
             } else {
                 throw new EntityLoadingException("could not find armor_type block.");
             }
-            if (dataFile.exists("armor_tech")) {
-                sv.setArmorTechRating(dataFile.getDataAsInt("armor_tech")[0]);
-            } else if (dataFile.exists("armor_tech_rating")) {
+            //gets armor tech rating.  If it doesn't exist, defaults to structural tech rating
+            if (dataFile.exists("armor_tech_rating")) {
                 sv.setArmorTechRating(dataFile.getDataAsInt("armor_tech_rating")[0]);
+            } else {
+              if (dataFile.exists("structural_tech_rating")) {
+                sv.setArmorTechRating(dataFile.getDataAsInt("structural_tech_rating")[0]);
+              } else {
+                throw new EntityLoadingException("could not find armor tech rating or " +
+                    "structural tech rating");
+              }
             }
         }
     }
@@ -868,6 +874,7 @@ public class BLKFile {
         if (t.isSupportVehicle()) {
             blk.writeBlockData("structural_tech_rating", t.getStructuralTechRating());
             blk.writeBlockData("engine_tech_rating", t.getEngineTechRating());
+            blk.writeBlockData("armor_tech_rating", t.getArmorTechRating());
         }
 
         if (t.hasETypeFlag(Entity.ETYPE_SMALL_CRAFT) || t.hasETypeFlag(Entity.ETYPE_JUMPSHIP)) {

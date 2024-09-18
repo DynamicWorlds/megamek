@@ -133,18 +133,20 @@ public class BLKSupportTankFile extends BLKFile implements IMekLoader {
         t.setStructuralTechRating(dataFile
                 .getDataAsInt("structural_tech_rating")[0]);
         // Set armor tech rating, if it exists (defaults to structural tr)
-        // Allow use of armor_tech field if provided
         if (dataFile.exists("armor_tech_rating")) {
             t.setArmorTechRating(dataFile
                     .getDataAsInt("armor_tech_rating")[0]);
-        } else if (dataFile.exists("armor_tech")) {
+        } else {
             t.setArmorTechRating(dataFile
-                    .getDataAsInt("armor_tech")[0]);
+                    .getDataAsInt("structural_tech_rating")[0]);
         }
         // Set engine tech rating, if it exists (defaults to structural tr)
         if (dataFile.exists("engine_tech_rating")) {
             t.setEngineTechRating(dataFile
                     .getDataAsInt("engine_tech_rating")[0]);
+        }else {
+          t.setEngineTechRating(dataFile
+              .getDataAsInt("structural_tech_rating")[0]);
         }
 
         t.autoSetInternal();
